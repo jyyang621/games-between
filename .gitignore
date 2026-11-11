@@ -7,17 +7,15 @@ Thumbs.db
 .env.*
 .vscode/
 .idea/
+artifacts/
 微信小程序/project.private.config.json
 微信小程序/.wechatide/
-artifacts/
-数独/preview/wechat-game.js
 
-# Standalone source projects and original media stay independent.
+# Local development material is retained on disk, outside this code repository.
+/数独/
 /黄金矿工/
 /祖玛Zuma/
 /音频/
-
-# Local evidence snapshots and temporary Notion preparation files.
-/数独/docs/notion-baseline/source-snapshot*.json
-/数独/docs/notion-baseline/parallel-source-check*.json
-/数独/docs/notion-baseline/*-prep/
+/AGENTS.md
+/package.json
+/.github/

@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "playback": "sequential-loop",
+  "sourceDirectory": "音频",
+  "preparedBy": "scripts/prepare-background-music.mjs",
+  "preparerSha256": "367b984b523ba2640ee61d8e33af4814d9a6df7f06622a3dd7301d8972fbf8b6",
+  "attribution": "User-provided third-party music. The filenames identify the supplied recordings; these tracks are not original compositions or recordings of this project.",
+  "transformation": {
+    "fullTracks": true,
+    "trim": false,
+    "filter": "loudnorm=I=-20:TP=-3:LRA=11:print_format=json",
+    "channelLayout": "mono",
+    "encoder": "libmp3lame",
+    "ffmpegVersion": "ffmpeg version 7.1-essentials_build-www.gyan.dev Copyright (c) 2000-2024 the FFmpeg developers"
+  },
+  "tracks": [
+    {
+      "title": "平沙落雁 - 李祥霆",
+      "sourceFile": "平沙落雁-李祥霆.mp3",
+      "sourceSha256": "200531b0bcc42d493e6703854f819382bad982c8571db4a99e7094b123201b41",
+      "sourceBytes": 15111441,
+      "sourceDurationSeconds": 377.782857,
+      "src": "assets/audio/pingsha-luoyan.mp3",
+      "sha256": "4fed0c6220f6cc7b9a12dc2ade5257bcd5c9742bec97cabbc5ccbf3a525129f5",
+      "bytes": 1511357,
+      "durationSeconds": 377.80898,
+      "codec": "mp3",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bitrateKbps": 32,
+      "analysis": {
+        "decodedMaxDbfs": -2.5,
+        "normalization": {
+          "input_i": "-12.04",
+          "input_tp": "-0.15",
+          "input_lra": "12.60",
+          "input_thresh": "-23.53",
+          "output_i": "-19.53",
+          "output_tp": "-5.23",
+          "output_lra": "10.20",
+          "output_thresh": "-30.73",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.47"
+        }
+      }
+    },
+    {
+      "title": "阳关三叠 - 传奇乐坊",
+      "sourceFile": "阳关三叠.埙.中阮二重奏.-传奇乐坊.mp3",
+      "sourceSha256": "f6b2aee156c26e535fc4401aaa948bb166d9e019624336d2876034f1c6546ef6",
+      "sourceBytes": 10010324,
+      "sourceDurationSeconds": 250.253061,
+      "src": "assets/audio/yangguan-sandie.mp3",
+      "sha256": "19ca93b0d005f8e502461644ac460c76bf5b49c0a981d83b58d055774405072d",
+      "bytes": 1001238,
+      "durationSeconds": 250.279184,
+      "codec": "mp3",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bitrateKbps": 32,
+      "analysis": {
+        "decodedMaxDbfs": -1.3,
+        "normalization": {
+          "input_i": "-20.05",
+          "input_tp": "-1.55",
+          "input_lra": "10.10",
+          "input_thresh": "-30.63",
+          "output_i": "-19.21",
+          "output_tp": "-3.00",
+          "output_lra": "9.30",
+          "output_thresh": "-29.64",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.79"
+        }
+      }
+    }
+  ]
+}

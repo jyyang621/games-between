@@ -1,0 +1,6 @@
+* text=auto eol=lf
+
+# Provenance manifests hash these files byte for byte.
+微信小程序/vendor/** -text
+微信小程序/src/games/*/core/** -text
+数独/scripts/prepare-background-music.mjs -text

@@ -1,0 +1,98 @@
+{
+  "baselineId": "BL-2026-11-07-04",
+  "root": {
+    "id": "3fd90dbc-56c3-8043-85ee-c17277837dec",
+    "url": "https://app.notion.com/p/3fd90dbc56c3804385eec17277837dec",
+    "title": "微信小程序——怀旧小游戏"
+  },
+  "pages": {
+    "2048": {
+      "id": "3fd90dbc-56c3-812b-9402-ddc514f744a8",
+      "url": "https://app.notion.com/p/3fd90dbc56c3812b9402ddc514f744a8?pvs=204",
+      "properties": {
+        "title": "2048｜项目计划、实施与算法基准"
+      }
+    },
+    "architecture": {
+      "id": "3fd90dbc-56c3-817c-9858-f15fa3116996",
+      "url": "https://app.notion.com/p/3fd90dbc56c3817c9858f15fa3116996?pvs=204",
+      "properties": {
+        "title": "总体架构与新游戏接入规范"
+      }
+    },
+    "zuma": {
+      "id": "3fd90dbc-56c3-8103-89f6-f122f3f6765e",
+      "url": "https://app.notion.com/p/3fd90dbc56c3810389f6f122f3f6765e?pvs=204",
+      "properties": {
+        "title": "Zuma｜项目计划、实施与算法基准"
+      }
+    },
+    "gold-miner": {
+      "id": "3fd90dbc-56c3-814c-a73c-f9ee9b276047",
+      "url": "https://app.notion.com/p/3fd90dbc56c3814ca73cf9ee9b276047?pvs=204",
+      "properties": {
+        "title": "黄金矿工｜项目计划、实施与算法基准"
+      }
+    },
+    "roadmap": {
+      "id": "3fd90dbc-56c3-81ee-99fc-d9e9f8b947b1",
+      "url": "https://app.notion.com/p/3fd90dbc56c381ee99fcd9e9f8b947b1?pvs=204",
+      "properties": {
+        "title": "实施路线与发布验收"
+      }
+    },
+    "journal": {
+      "id": "3fd90dbc-56c3-8192-9c94-da17298aeecf",
+      "url": "https://app.notion.com/p/3fd90dbc56c381929c94da17298aeecf?pvs=204",
+      "properties": {
+        "title": "阶段更新记录"
+      }
+    },
+    "sudoku": {
+      "id": "3fd90dbc-56c3-819e-8b89-c0a410be6bfe",
+      "url": "https://app.notion.com/p/3fd90dbc56c3819e8b89c0a410be6bfe?pvs=204",
+      "properties": {
+        "title": "数独｜项目计划、课堂训练与算法基准"
+      }
+    },
+    "workflow": {
+      "id": "3fd90dbc-56c3-81b8-b502-faecced11ab4",
+      "url": "https://app.notion.com/p/3fd90dbc56c381b8b502faecced11ab4?pvs=204",
+      "properties": {
+        "title": "重大更新后同步 Notion｜规范与模板"
+      }
+    },
+    "gomoku": {
+      "id": "41090dbc-56c3-81ee-9df9-ec35ef0cafc6",
+      "url": "https://app.notion.com/p/41090dbc56c381ee9df9ec35ef0cafc6?pvs=204",
+      "properties": {
+        "title": "五子棋｜项目计划、实施与算法基准"
+      }
+    },
+    "minesweeper": {
+      "id": "3fe90dbc-56c3-816b-80a7-e00248814192",
+      "url": "https://app.notion.com/p/3fe90dbc56c3816b80a7e00248814192?pvs=204",
+      "properties": {
+        "title": "扫雷｜项目计划、实施与算法基准"
+      }
+    },
+    "tetris": {
+      "id": "41090dbc-56c3-8165-b15f-f3fcd3d94bfa",
+      "url": "https://app.notion.com/p/41090dbc56c38165b15ff3fcd3d94bfa?pvs=204",
+      "properties": {
+        "title": "俄罗斯方块｜项目计划、实施与算法基准"
+      }
+    },
+    "huarongdao": {
+      "id": "41090dbc-56c3-81aa-ac10-d33f781ec276",
+      "url": "https://app.notion.com/p/41090dbc56c381aaac10d33f781ec276?pvs=204",
+      "properties": {
+        "title": "华容道｜项目计划、实施与算法基准"
+      }
+    }
+  },
+  "verifiedAt": "2026-11-07",
+  "sourceSnapshot": "source-snapshot-huarongdao.json",
+  "mcpWorkflowEnabled": true,
+  "documentationRefresh": "documentation-huarongdao.json"
+}

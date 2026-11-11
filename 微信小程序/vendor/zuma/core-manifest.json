@@ -1,0 +1,24 @@
+{
+  "sourceProject": "Marble Trail / D:\\祖玛Zuma",
+  "license": "MIT",
+  "compiler": "TypeScript 5.9.3",
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "CommonJS",
+    "removeComments": false
+  },
+  "files": [
+    {
+      "source": "model.ts",
+      "generated": "../../src/games/zuma/core/model.js",
+      "sourceSha256": "30512a567ec0dd3b01632e75de5cb2a10c046c7cbb07dde8d7128f57af7ef4f8",
+      "generatedSha256": "155ee9e6943dbfd0b0ff1330765d23e2f768a7f70a39bb932f9de0f9a19cf045"
+    },
+    {
+      "source": "track.ts",
+      "generated": "../../src/games/zuma/core/track.js",
+      "sourceSha256": "943b0681268c3ce6bb5c5b563c76826c524b4c1d279ab1350002628b88e82ef1",
+      "generatedSha256": "2f92d24897594555ece8f30eda8e768a98516fce9547602fbbc624672d619db8"
+    }
+  ]
+}

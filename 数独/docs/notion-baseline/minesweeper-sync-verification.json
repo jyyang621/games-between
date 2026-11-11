@@ -1,0 +1,80 @@
+{
+  "baseline": "BL-2026-10-19-02",
+  "synced": true,
+  "checkedAt": "2026-10-19T14:12:36.068Z",
+  "timezone": "Asia/Shanghai",
+  "pages": [
+    {
+      "key": "home",
+      "id": "3fd90dbc56c3804385eec17277837dec",
+      "url": "https://app.notion.com/p/3fd90dbc56c3804385eec17277837dec?pvs=204",
+      "chars": 12413,
+      "baseline": true,
+      "images": 0,
+      "children": 9,
+      "previousChildrenPreserved": true,
+      "previousFilesPreserved": true,
+      "files": 5
+    },
+    {
+      "key": "architecture",
+      "id": "3fd90dbc56c3817c9858f15fa3116996",
+      "url": "https://app.notion.com/p/3fd90dbc56c3817c9858f15fa3116996?pvs=204",
+      "chars": 10738,
+      "baseline": true,
+      "images": 0
+    },
+    {
+      "key": "roadmap",
+      "id": "3fd90dbc56c381ee99fcd9e9f8b947b1",
+      "url": "https://app.notion.com/p/3fd90dbc56c381ee99fcd9e9f8b947b1?pvs=204",
+      "chars": 5071,
+      "baseline": true,
+      "images": 0
+    },
+    {
+      "key": "stage",
+      "id": "3fd90dbc56c381929c94da17298aeecf",
+      "url": "https://app.notion.com/p/3fd90dbc56c381929c94da17298aeecf?pvs=204",
+      "chars": 12017,
+      "baseline": true,
+      "images": 0,
+      "previousHistoryPreserved": true,
+      "newStageCount": 1
+    },
+    {
+      "key": "game",
+      "id": "3fe90dbc56c3816b80a7e00248814192",
+      "url": "https://app.notion.com/p/3fe90dbc56c3816b80a7e00248814192?pvs=204",
+      "chars": 3657,
+      "baseline": true,
+      "images": 3
+    }
+  ],
+  "previous2048Images": 4,
+  "sourceSnapshotUploaded": false,
+  "sourceSnapshotLocal": "source-snapshot-minesweeper.json",
+  "stageHistoryPreserved": true,
+  "previousHomeChildrenPreserved": true,
+  "previousHomeFilesPreserved": true,
+  "authorization": "用户明确允许同步实现说明、源码相对路径、存档键、构建测试结果和快照摘要；完整文件清单留本机",
+  "sourceDigest": "88fd84ad5a8115eda9e030016c30dfb63b896b32a2425d85a9886a74f3afbbb1",
+  "tests": 450,
+  "testFiles": 38,
+  "nativeModules": 46,
+  "games": 5,
+  "finalMergedVerification": {
+    "at": "2026-10-19T14:17:09.401Z",
+    "tests": 465,
+    "testFiles": 38,
+    "nativeModules": 46,
+    "games": 5,
+    "sourceFiles": 137,
+    "digest": "9d2dc3fb7e13beeadc12984bf691e2627c1ad2518d36af72ff4566663cb4468c",
+    "buildPassed": true,
+    "packageMiB": 3.49,
+    "parallelMusicUpdated": true,
+    "initialSweepTests": 450,
+    "sweepNewTests": 34
+  }
+}

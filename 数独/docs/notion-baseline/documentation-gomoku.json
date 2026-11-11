@@ -1,0 +1,86 @@
+{
+  "baseline": "BL-2026-11-07-01",
+  "capturedAt": "2026-11-06T16:58:48.225Z",
+  "digest": "753c2ad138ba480ea3bc04a71c56e5d77de87c5180c87abbc8317f2856b57686",
+  "sourceFiles": 148,
+  "validation": {
+    "tests": 560,
+    "testFiles": 45,
+    "addedTests": 41,
+    "nativeModules": 50,
+    "games": 6,
+    "estimatedMiB": 3.53,
+    "canvasViewports": [
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        568
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        480,
+        320
+      ]
+    ],
+    "canvasImages": 12,
+    "canvasVisualReview": true,
+    "wechatDevtools": "Stable 2.02.2608080, base library 3.17.4, iPhone 12/13 simulator partial interaction",
+    "browserInteraction": false,
+    "phoneDevice": false,
+    "uploaded": false,
+    "published": false
+  },
+  "readback": {
+    "complete": true,
+    "originalChildPages": 9,
+    "currentChildPages": 10,
+    "retainedChildPages": true,
+    "originalAttachments": 5,
+    "retainedAttachments": true,
+    "gameParentVerified": true,
+    "internalLinksVerified": true
+  },
+  "pages": [
+    {
+      "id": "3fd90dbc56c3804385eec17277837dec",
+      "url": "https://app.notion.com/p/3fd90dbc56c3804385eec17277837dec?pvs=204",
+      "title": "🎮 微信小程序——怀旧小游戏",
+      "mirror": "overview.md",
+      "bodyLength": 16838
+    },
+    {
+      "id": "41090dbc56c381ee9df9ec35ef0cafc6",
+      "url": "https://app.notion.com/p/41090dbc56c381ee9df9ec35ef0cafc6?pvs=204",
+      "title": "⚫ 五子棋｜项目计划、实施与算法基准",
+      "mirror": "gomoku.md",
+      "bodyLength": 3318
+    },
+    {
+      "id": "3fd90dbc56c381929c94da17298aeecf",
+      "url": "https://app.notion.com/p/3fd90dbc56c381929c94da17298aeecf?pvs=204",
+      "title": "📒 阶段更新记录",
+      "mirror": "journal.md",
+      "bodyLength": 18616
+    },
+    {
+      "id": "3fd90dbc56c3817c9858f15fa3116996",
+      "url": "https://app.notion.com/p/3fd90dbc56c3817c9858f15fa3116996?pvs=204",
+      "title": "🏗️ 总体架构与新游戏接入规范",
+      "mirror": "architecture.md",
+      "bodyLength": 13271
+    },
+    {
+      "id": "3fd90dbc56c381ee99fcd9e9f8b947b1",
+      "url": "https://app.notion.com/p/3fd90dbc56c381ee99fcd9e9f8b947b1?pvs=204",
+      "title": "🗺️ 实施路线与发布验收",
+      "mirror": "roadmap.md",
+      "bodyLength": 6889
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "baseline": "BL-2026-11-07-03",
+  "capturedAt": "2026-11-06T17:41:42.229Z",
+  "digest": "ed8eddc1f24f59d201629522b2739a6a9c365d6753b8f13c0ca4365136e6edee",
+  "sourceFiles": 156,
+  "validation": {
+    "tests": 640,
+    "testFiles": 50,
+    "addedTests": 48,
+    "nativeModules": 53,
+    "games": 7,
+    "estimatedMiB": 3.57,
+    "canvasImages": 12,
+    "wechatDevtools": "Stable 2.02.2608080; base library 3.17.4; iPhone 12/13 simulator; lobby third page, right movement, hard drop 14 points, rotation, pause, normal recompile save restoration and restart cancellation verified",
+    "sourceStableAfterTestsAndWechat": true,
+    "browserInteraction": false,
+    "phoneDevice": false,
+    "uploaded": false,
+    "published": false
+  },
+  "readback": {
+    "complete": true,
+    "originalChildPages": 10,
+    "currentChildPages": 11,
+    "retainedChildPages": true,
+    "newChild": [
+      {
+        "url": "https://app.notion.com/p/41090dbc56c38165b15ff3fcd3d94bfa",
+        "title": "俄罗斯方块｜项目计划、实施与算法基准"
+      }
+    ],
+    "originalAttachments": 5,
+    "currentAttachments": 5,
+    "retainedAttachments": true,
+    "tetrisParent": true,
+    "internalLinksVerified": true
+  },
+  "pages": [
+    {
+      "name": "overview.md",
+      "bodyLength": 19611,
+      "id": "3fd90dbc56c3804385eec17277837dec",
+      "url": "https://app.notion.com/p/3fd90dbc56c3804385eec17277837dec?pvs=204",
+      "title": "🎮 微信小程序——怀旧小游戏"
+    },
+    {
+      "name": "tetris.md",
+      "bodyLength": 3488,
+      "id": "41090dbc56c38165b15ff3fcd3d94bfa",
+      "url": "https://app.notion.com/p/41090dbc56c38165b15ff3fcd3d94bfa?pvs=204",
+      "title": "🧩 俄罗斯方块｜项目计划、实施与算法基准"
+    },
+    {
+      "name": "architecture.md",
+      "bodyLength": 13790,
+      "id": "3fd90dbc56c3817c9858f15fa3116996",
+      "url": "https://app.notion.com/p/3fd90dbc56c3817c9858f15fa3116996?pvs=204",
+      "title": "🏗️ 总体架构与新游戏接入规范"
+    },
+    {
+      "name": "journal.md",
+      "bodyLength": 23530,
+      "id": "3fd90dbc56c381929c94da17298aeecf",
+      "url": "https://app.notion.com/p/3fd90dbc56c381929c94da17298aeecf?pvs=204",
+      "title": "📒 阶段更新记录"
+    },
+    {
+      "name": "roadmap.md",
+      "bodyLength": 7922,
+      "id": "3fd90dbc56c381ee99fcd9e9f8b947b1",
+      "url": "https://app.notion.com/p/3fd90dbc56c381ee99fcd9e9f8b947b1?pvs=204",
+      "title": "🗺️ 实施路线与发布验收"
+    }
+  ]
+}

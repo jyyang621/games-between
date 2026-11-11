@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-18",
+  "baselineId": "BL-2026-10-18-02",
+  "codeVerificationAt": "2026-10-18T14:57:23.430Z",
+  "codeUnchangedFrom": "source-snapshot-2048.json",
+  "checkedFiles": 113,
+  "testsRerun": false,
+  "previousTests": {
+    "pass": 362,
+    "capturedAt": "2026-10-18T14:38:51.125Z"
+  },
+  "pageCount": 9,
+  "directChildren": 8,
+  "images": [
+    {
+      "id": "3fd90dbc-56c3-8154-9b9d-00b20371fe09",
+      "filename": "2048-main-BL-2026-10-18-02.jpg",
+      "bytes": 19506
+    },
+    {
+      "id": "3fd90dbc-56c3-8136-a9a8-00b251218fe3",
+      "filename": "2048-hub-BL-2026-10-18-02.jpg",
+      "bytes": 21775
+    },
+    {
+      "id": "3fd90dbc-56c3-81e6-a3ad-00b22a919b47",
+      "filename": "2048-narrow-BL-2026-10-18-02.jpg",
+      "bytes": 14852
+    },
+    {
+      "id": "3fd90dbc-56c3-8197-821c-00b2b5294c5a",
+      "filename": "2048-landscape-BL-2026-10-18-02.jpg",
+      "bytes": 15772
+    }
+  ],
+  "backup": {
+    "id": "3fd90dbc-56c3-81c4-94b7-00b24e762b29",
+    "filename": "games-between-docs-BL-2026-10-18-02-refreshed.md",
+    "bytes": 135793
+  },
+  "readbackVerified": true,
+  "notes": "补入 2048 主界面、大厅、窄屏与横屏四张真实本地预览截图；修复总览当前快照指向、预览 URL 和仓库路径伪链接；补齐 2048 v1 存档验收。代码未修改，沿用 BL-2026-10-18-02，不重复创建阶段或子页。",
+  "completionSourceCheck": {
+    "checkedAt": "2026-10-18T15:07:49.332Z",
+    "timezone": "Asia/Shanghai",
+    "comparedTo": "BL-2026-10-18-02",
+    "checkedFiles": 113,
+    "changed": [
+      {
+        "path": "preview/wx-preview.js",
+        "previousSha256": "b42dbd00274a83fcffbc1c697af547977aac6d6edd6519b37e42cd22e0856916",
+        "currentSha256": "413e4f3922267f33f0307670a7566e7ef76d9db404ad62826c157b8173c90051",
+        "modifiedAt": "2026-10-18T15:05:18.868Z"
+      },
+      {
+        "path": "tests/minigame-platform.test.mjs",
+        "previousSha256": "c5854f930c3ff3475c41cdab9d565f9bdfb9e462d99560c8095d517cf22c3417",
+        "currentSha256": "21827f9548ab634e80261117e9d38faa71f78be9c7465d3af17a25f47ba33051",
+        "modifiedAt": "2026-10-18T15:06:43.344Z"
+      },
+      {
+        "path": "tests/minigame-sudoku.test.mjs",
+        "previousSha256": "2696ea32de9c8fe87a72dc4082761587ba8fa4c40c3e1e6ee70c1d27b958806f",
+        "currentSha256": "ecbfd2ad53713e15fd31a51c2ff282dbadeeff42adf807d47af2fe8d76e6af44",
+        "modifiedAt": "2026-10-18T15:05:19.326Z"
+      },
+      {
+        "path": "wechat-minigame/src/games/sudoku/index.js",
+        "previousSha256": "787409e63c12b89ff8bac32d1d3be149542f27f84e19aa5cf9ec1a245b3fe48c",
+        "currentSha256": "25b8dfdf0543f07b1a2ceb66e2ecc1eaa8abc7662f26578d70879b23f10b2cc3",
+        "modifiedAt": "2026-10-18T15:06:15.746Z"
+      },
+      {
+        "path": "wechat-minigame/src/games/sudoku/rated-state.js",
+        "previousSha256": "654a098f6adb9f0a03fc293701aa8513a84708ce1b1d9d8959880bb99ce21ca1",
+        "currentSha256": "e45223ff801d4070477486eb417bfb2450697001d8f77f50b69b04b2c4c7aa0a",
+        "modifiedAt": "2026-10-18T15:06:50.389Z"
+      },
+      {
+        "path": "wechat-minigame/src/games/sudoku/renderer.js",
+        "previousSha256": "0a85a530e140a67fd4c37c4b8d6fa027e3d7998874a04374e37edf1c4c899b7e",
+        "currentSha256": "dcc4ca056cd81a4c0928b21c6d702512bf571fcd0af33718652a1b3db51777c0",
+        "modifiedAt": "2026-10-18T15:07:48.105Z"
+      },
+      {
+        "path": "wechat-minigame/src/games/sudoku/state.js",
+        "previousSha256": "7fe2afc8eeff3c2b6333e6c0eeab41c62a76ad1c45e386f62a475ac39177c530",
+        "currentSha256": "78277fe24bc07ac505fb48f231508a0dcc7380b8b7b588212b609ed2283e9ea5",
+        "modifiedAt": "2026-10-18T15:06:32.706Z"
+      }
+    ],
+    "status": "并行工作区差异，尚未纳入已验证基准",
+    "testsRerun": false
+  },
+  "currentSourceMatchesBaseline": false,
+  "pendingChangesFile": "parallel-source-check-2026-10-18.json",
+  "parallelChangesAttachment": {
+    "id": "3fd90dbc-56c3-8179-b832-00b2b404cf89",
+    "filename": "parallel-source-check-2026-10-18.json"
+  }
+}

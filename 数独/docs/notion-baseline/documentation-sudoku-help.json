@@ -1,0 +1,64 @@
+{
+  "baseline": "BL-2026-11-06-01",
+  "capturedAt": "2026-11-06T13:34:49.847Z",
+  "digest": "a0b3d34a597bec1316731710a835fe3049011c43d8d33514fc4c425c5298c692",
+  "sourceFiles": 141,
+  "validation": {
+    "tests": 519,
+    "testFiles": 42,
+    "addedTests": 54,
+    "nativeModules": 46,
+    "games": 5,
+    "canvasViewports": [
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        568
+      ],
+      [
+        844,
+        390
+      ],
+      [
+        480,
+        320
+      ]
+    ],
+    "canvasImages": 8,
+    "notionImagesAdded": 2,
+    "retainedChildPages": 9
+  },
+  "pages": [
+    {
+      "id": "3fd90dbc56c3804385eec17277837dec",
+      "url": "https://app.notion.com/p/3fd90dbc56c3804385eec17277837dec?pvs=204",
+      "title": "🎮 微信小程序——怀旧小游戏",
+      "mirror": "overview.md",
+      "bodyLength": 15174
+    },
+    {
+      "id": "3fd90dbc56c3819e8b89c0a410be6bfe",
+      "url": "https://app.notion.com/p/3fd90dbc56c3819e8b89c0a410be6bfe?pvs=204",
+      "title": "🧩 数独｜项目计划、课堂训练与算法基准",
+      "mirror": "sudoku.md",
+      "bodyLength": 18503
+    },
+    {
+      "id": "3fd90dbc56c381929c94da17298aeecf",
+      "url": "https://app.notion.com/p/3fd90dbc56c381929c94da17298aeecf?pvs=204",
+      "title": "📒 阶段更新记录",
+      "mirror": "journal.md",
+      "bodyLength": 16485
+    },
+    {
+      "id": "3fd90dbc56c381ee99fcd9e9f8b947b1",
+      "url": "https://app.notion.com/p/3fd90dbc56c381ee99fcd9e9f8b947b1?pvs=204",
+      "title": "🗺️ 实施路线与发布验收",
+      "mirror": "roadmap.md",
+      "bodyLength": 6404
+    }
+  ]
+}

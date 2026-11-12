@@ -28,7 +28,7 @@ function oreValue(ore, diamondBonus = false) {
     const value = exports.ORE_TYPES[ore.kind].value;
     return ore.kind === 'diamond' && diamondBonus ? Math.round(value * 1.5) : value;
 }
-// Every position and item is fixed. Retrying a level always restores the same mine.
+// Authored templates define progression and item budgets, not the live positions.
 const POSITIONS = [
     [416, 330], [864, 330], [568, 450], [712, 450],
     [264, 450], [1016, 450], [112, 330], [1168, 330],
@@ -170,8 +170,96 @@ function seededRandom(seed) {
         return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
     };
 }
+/**
+ * Seeded rejection sampling, rather than alternating types on fixed shelves.
+ * Budgets/mechanics stay authored; positions change between runs. Check spacing
+ * in both landscape and the narrowest supported portrait world (720 × 740).
+ * Walking actors may cross later; these constraints describe the initial mine.
+ */
+function randomizeLayout(level, random) {
+    const portraitX = (720 - 96) / (1280 - 110);
+    const portraitY = (740 - 178) / (720 - 178);
+    const shuffled = (items) => {
+        for (let i = items.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [items[i], items[j]] = [items[j], items[i]];
+        }
+        return items;
+    };
+    const hasElf = level.ores.some(ore => ore.kind === 'elf');
+    for (let attempt = 0; attempt < 32; attempt++) {
+        // A deterministic reserve is verified for all authored budgets, including
+        // the maximum endless target. Unusually unlucky seeds cannot keep retrying.
+        if (attempt === 16)
+            random = seededRandom(0);
+        const placed = [];
+        const actors = shuffled(level.ores.filter(ore => ore.motion));
+        // Big circles first avoids trapping the final nugget in small gaps. Random
+        // tie order and continuous coordinates remove any type/column association.
+        const treasures = shuffled(level.ores.filter(ore => !ore.motion && ore.kind !== 'barrel'))
+            .sort((a, b) => b.radius - a.radius);
+        const barrels = level.ores.filter(ore => ore.kind === 'barrel');
+        const fits = (candidate) => placed.every(other => {
+            const dx = candidate.x - other.x, dy = candidate.y - other.y;
+            const clearance = candidate.radius + other.radius + 8;
+            return Math.hypot(dx, dy) >= clearance &&
+                Math.hypot(dx * portraitX, dy * portraitY) >= clearance;
+        });
+        let failed = false;
+        for (const source of [...actors, ...treasures, ...barrels]) {
+            let accepted = false;
+            for (let draw = 0; draw < 1000; draw++) {
+                const motion = source.motion ? { ...source.motion, direction: (random() < 0.5 ? -1 : 1) } : undefined;
+                const valuable = source.kind === 'goldLarge' || source.kind === 'diamond';
+                const minY = source.kind === 'barrel' ? 420 : 280;
+                const maxY = hasElf && valuable ? 480 : 660 - source.radius;
+                const candidate = {
+                    ...source,
+                    x: motion ? motion.left + random() * (motion.right - motion.left) : 110 + random() * 1060,
+                    y: motion ? source.y : minY + random() * (maxY - minY),
+                    ...(motion ? { motion } : {}),
+                };
+                // Reachable from the solo winch in both orientations. In duo mode at
+                // least the nearer player's winch can reach the same target.
+                const dx = Math.abs(candidate.x - 640), dy = candidate.y - 148;
+                if (Math.atan2(dx, dy) > Math.PI * 74 / 180 ||
+                    Math.atan2(dx * portraitX, dy * portraitY) > Math.PI * 64 / 180)
+                    continue;
+                if (!fits(candidate))
+                    continue;
+                if (source.kind === 'barrel') {
+                    const bombs = [...placed.filter(ore => ore.kind === 'barrel'), candidate];
+                    const prizes = placed.filter(ore => !ore.motion && ore.kind !== 'barrel');
+                    const inBlast = (ore, barrel) => Math.hypot(ore.x - barrel.x, ore.y - barrel.y) <= exports.BARREL_BLAST_RADIUS + ore.radius;
+                    // TNT must pose a real local tradeoff, not sit in an empty corner.
+                    if (!prizes.some(ore => oreValue(ore) >= 200 && inBlast(ore, candidate)))
+                        continue;
+                    const safeValue = prizes.filter(ore => !bombs.some(barrel => inBlast(ore, barrel)) &&
+                        !placed.some(actor => actor.kind === 'elf' && Math.abs(actor.y - ore.y) <= actor.radius + ore.radius))
+                        .reduce((sum, ore) => sum + oreValue(ore), 0);
+                    // Even all barrels exploding leaves enough stationary value to win,
+                    // plus a small buffer. This is a value safeguard, not a time guarantee.
+                    if (safeValue < level.target * 1.15)
+                        continue;
+                }
+                placed.push(candidate);
+                accepted = true;
+                break;
+            }
+            if (!accepted) {
+                failed = true;
+                break;
+            }
+        }
+        if (!failed) {
+            // Keep stable IDs/order so save replay and rendering are reproducible.
+            return { ...level, ores: level.ores.map(ore => placed.find(item => item.id === ore.id)) };
+        }
+    }
+    throw new Error(`Unable to place bounded mine for level ${level.id}`);
+}
 /** A bounded 25-item mine: high round numbers never create a denser, impossible grid. */
-function generateEndlessLevel(index, seed) {
+function generateEndlessLevel(index, seed, layoutVersion = 2) {
     if (!Number.isInteger(index) || index < 0 || index >= exports.MAX_ENDLESS_LEVEL) {
         throw new RangeError(`Endless level index must be between 0 and ${exports.MAX_ENDLESS_LEVEL - 1}`);
     }
@@ -181,17 +269,22 @@ function generateEndlessLevel(index, seed) {
     const variant = Math.floor(random() * EXPANSION_BLUEPRINTS.length);
     const id = index + 1;
     const target = Math.min(4800, 1000 + Math.floor((Math.log2(index + 1) * 300 + Math.min(index, 100) * 22) / 50) * 50);
-    return {
+    const level = {
         id, name: `无尽矿脉 ${id}`, subtitle: '矿脉每轮变化。桶会爆炸，猪猪会跑，小精灵会清理自己的横线。',
         target, duration: 60, palette: PALETTES[Math.floor(random() * PALETTES.length)],
-        ores: expansionOres({ id, variant, mechanics: 4, speed: 1 + Math.min(index, 40) * 0.02, random }),
+        ores: expansionOres({ id, variant, mechanics: 4, speed: 1 + Math.min(index, 40) * 0.02, ...(layoutVersion === 1 ? { random } : {}) }),
     };
+    return layoutVersion === 1 ? level : randomizeLayout(level, random);
 }
-function getLevel(index, endless = false, seed = 1) {
+function getLevel(index, endless = false, seed = 1, layoutVersion = 2) {
     if (endless)
-        return generateEndlessLevel(index, seed);
+        return generateEndlessLevel(index, seed, layoutVersion);
     if (!Number.isInteger(index) || index < 0 || index >= exports.LEVELS.length) {
         throw new RangeError(`Campaign level index must be between 0 and ${exports.LEVELS.length - 1}`);
     }
-    return exports.LEVELS[index];
+    if (!Number.isFinite(seed))
+        throw new RangeError('Campaign seed must be finite');
+    if (layoutVersion === 1)
+        return { ...exports.LEVELS[index], ores: exports.LEVELS[index].ores.map(ore => ({ ...ore, ...(ore.motion ? { motion: { ...ore.motion } } : {}) })) };
+    return randomizeLayout(exports.LEVELS[index], seededRandom((seed >>> 0) ^ Math.imul(index + 1, 0x9e3779b1)));
 }

@@ -6,6 +6,7 @@ const { createLayout, renderGame } = require('./renderer.js');
 
 const ID = 'minesweeper';
 const SAVE_KEY = saveKey(ID);
+const HOLD_MS = 450;
 const MAX_TIME = 31536000000;
 
 function createGame({ read = () => null, write = () => false, now = Date.now, services = {} } = {}) {
@@ -27,6 +28,8 @@ function createGame({ read = () => null, write = () => false, now = Date.now, se
   let paused = Boolean(restored && (round.status === 'ready' || round.status === 'playing'));
   let viewport = { width: 375, height: 750, safeTop: 24, safeBottom: 0 };
   let layout = createLayout(viewport, round);
+  let gesture = null, contacts = 0, blockedGesture = false;
+  function clearGesture() { gesture = null; contacts = 0; blockedGesture = false; }
   let generation = 0, disposed = false, storageOK = true;
 
   const live = () => round.status === 'ready' || round.status === 'playing';
@@ -39,11 +42,13 @@ function createGame({ read = () => null, write = () => false, now = Date.now, se
     return storageOK;
   }
   function pause() {
+    clearGesture();
     generation += 1;
     if (live()) paused = true;
   }
   function startNew(difficulty) {
     generation += 1;
+    clearGesture();
     round = createRound(difficulty, seed()); paused = false; mode = 'reveal';
     relayout(); save(); invalidate(); return true;
   }
@@ -67,13 +72,62 @@ function createGame({ read = () => null, write = () => false, now = Date.now, se
   }
   function cell(index) {
     if (paused || !live() || !Number.isInteger(index) || index < 0 || index >= round.rows * round.cols) return false;
-    const changed = mode === 'flag' ? toggleFlag(round, index) : round.revealed[index] ? chord(round, index) : reveal(round, index);
+    const changed = round.revealed[index] ? chord(round, index) : mode === 'flag' ? toggleFlag(round, index) : reveal(round, index);
     if (!changed) return false;
     if (round.status === 'won' && (bests[round.difficulty] === null || round.elapsedMs < bests[round.difficulty])) bests[round.difficulty] = round.elapsedMs;
     generation += 1; save(); return true;
   }
+  function press(index, identifier) {
+    if (paused || !live() || !Number.isInteger(index) || !layout.cells[index]) return false;
+    // Host delivers hit-target starts one at a time, without identifiers.
+    // Keep the canceled contact group blocked until every finger is released;
+    // otherwise a third finger could accidentally re-arm a canceled gesture.
+    contacts += 1;
+    if (contacts > 1 || blockedGesture) { gesture = null; blockedGesture = true; return false; }
+    gesture = { index, identifier, startedAt: Number(now()), held: false };
+    return true;
+  }
+  function hold() {
+    if (!gesture || gesture.held || paused || !live() || Number(now()) - gesture.startedAt < HOLD_MS) return false;
+    gesture.held = true;
+    if (round.revealed[gesture.index]) return false;
+    const changed = toggleFlag(round, gesture.index);
+    if (changed) { generation += 1; save(); }
+    return changed;
+  }
+  function pointer(type, points = []) {
+    if (disposed) return false;
+    if (type === 'cancel') { const had = contacts > 0; clearGesture(); return had; }
+    if (type === 'start') {
+      if (points.length !== 1) { contacts += points.length; gesture = null; blockedGesture = contacts > 0; return false; }
+      const point = points[0];
+      const index = layout.cells.findIndex(r => point.clientX >= r.x && point.clientX <= r.x + r.w && point.clientY >= r.y && point.clientY <= r.y + r.h);
+      return press(index, point.identifier);
+    }
+    if (type === 'end') {
+      contacts = Math.max(0, contacts - points.length);
+      if (blockedGesture) {
+        if (contacts === 0) clearGesture();
+        return false;
+      }
+    }
+    if (!gesture) return false;
+    const point = points.find(p => gesture.identifier === undefined || p.identifier === gesture.identifier);
+    const r = layout.cells[gesture.index];
+    if (!point || points.length !== 1 || point.clientX < r.x || point.clientX > r.x + r.w || point.clientY < r.y || point.clientY > r.y + r.h) {
+      gesture = null; return false;
+    }
+    if (type === 'move') return true;
+    if (type !== 'end') return false;
+    hold();
+    const pending = gesture;
+    gesture = null;
+    return pending.held ? true : cell(pending.index);
+  }
   function activate(action, payload) {
     if (disposed) return false;
+    if (action === ID + ':press') return press(payload);
+    clearGesture();
     if (action === ID + ':cell') return cell(payload);
     if (action === ID + ':mode' && !paused && live() && ['reveal', 'flag'].includes(payload) && payload !== mode) {
       mode = payload; generation += 1; save(); return true;
@@ -86,7 +140,7 @@ function createGame({ read = () => null, write = () => false, now = Date.now, se
       pause();
       if (services.modal) services.modal({
         title: '扫雷 · 玩法',
-        content: '点击“翻开”后轻点格子。数字表示周围八格的地雷数量；空白区域会自动展开。\n\n首次翻开的格子及周围一圈不会有雷。普通随机棋盘可能需要猜测。\n\n切换到“插旗”，点击未翻开的格子可插旗或取消；插旗不会自动判定正确。切回“翻开”继续排查。\n\n在“翻开”模式点击已翻开的数字：若周围旗数与数字相同，会展开其余相邻格。插错旗仍可能触雷。\n\n翻开全部非雷格即获胜，无需插满旗。首次翻开后开始计时，各难度分别记录最佳用时。\n\n进度自动保存在本机。暂停、返回大厅或切到后台会停止计时，回来后点击“继续”。',
+        content: '点击“翻开”后轻点格子。数字表示周围八格的地雷数量；空白区域会自动展开到数字边界，数字格只翻开自身。\n\n首次翻开的格子及周围一圈不会有雷。新棋盘会优先选择较适中的首开区域，不截断空白展开。随机棋盘仍可能需要猜测。\n\n长按未翻开的格子可插旗或取消，也可切换到“插旗”后轻点；插旗不会自动判定正确。切回“翻开”继续排查。\n\n任意模式轻点已翻开的数字：若周围旗数与数字相同，会展开其余相邻格。插错旗仍可能触雷。\n\n翻开全部非雷格即获胜，无需插满旗。首次翻开后开始计时，各难度分别记录最佳用时。\n\n进度自动保存在本机。暂停、返回大厅或切到后台会停止计时，回来后点击“继续”。',
         showCancel: false, confirmText: '知道了',
       });
       return true;
@@ -96,12 +150,13 @@ function createGame({ read = () => null, write = () => false, now = Date.now, se
   return {
     id: ID, frameInterval: 250,
     enter() { generation += 1; },
-    resize(next) { viewport = next; relayout(); },
+    resize(next) { clearGesture(); viewport = next; relayout(); },
     render(ctx) { return renderGame(ctx, layout, { round, bests, mode, paused, storageAvailable: storageOK && services.storageAvailable !== false }); },
     tick(deltaMs) {
+      if (!disposed) hold();
       if (!disposed && !paused && round.status === 'playing' && Number.isFinite(deltaMs) && deltaMs > 0) round.elapsedMs = Math.min(MAX_TIME, round.elapsedMs + deltaMs);
     },
-    activate, pointer() { return false; }, pause, save,
+    activate, pointer, pause, save,
     sharePayload() { return { title: '一起来玩扫雷 · 花自飘零的游戏空间', query: 'g=' + ID }; },
     getResumeInfo() {
       const difficulty = DIFFICULTIES.find(item => item.id === round.difficulty);

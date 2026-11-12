@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const directory = dirname(fileURLToPath(import.meta.url));
 const output = resolve(directory, '../../src/games/gold-miner/core');
 const names = ['engine', 'levels', 'modes', 'storage', 'viewport', 'renderer'];
-const maintained = new Set(['engine', 'levels', 'renderer']);
+const maintained = new Set(['engine', 'levels', 'renderer', 'storage']);
 const sourcePath = name => resolve(directory, maintained.has(name) ? '' : 'original', `${name}.ts`);
 const hash = value => createHash('sha256').update(value).digest('hex');
 const manifestPath = resolve(directory, 'manifest.json');

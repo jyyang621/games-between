@@ -1,7 +1,8 @@
 'use strict';
 
 // Pure rules: seed and firstIndex completely determine the delayed mine layout.
-const VERSION = 1;
+const VERSION = 2;
+const OPENING_ATTEMPTS = 64;
 const UINT32_MAX = 0xffffffff;
 const DEFAULT_SEED = 0x6d696e65;
 const DIFFICULTIES = Object.freeze([
@@ -91,16 +92,31 @@ function generateMines(round, firstIndex) {
     value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
     return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
   }
-  const mines = Array(round.rows * round.cols).fill(false);
-  // Partial Fisher-Yates samples distinct allowed cells without retry loops.
-  for (let cursor = 0; cursor < round.mineCount; cursor += 1) {
-    const selected = cursor + Math.floor(random() * (available.length - cursor));
-    const value = available[cursor];
-    available[cursor] = available[selected];
-    available[selected] = value;
-    mines[available[cursor]] = true;
+  // Version 1 remains reproducible for existing saved boards. New boards use
+  // bounded rejection sampling of whole random layouts, never partial floods.
+  // This deliberately favors smaller openings; it is not uniform over all
+  // legal layouts, a guaranteed size limit, or a no-guess solver.
+  const attempts = round.version === 1 ? 1 : OPENING_ATTEMPTS;
+  const openingLimit = Math.max(9, Math.floor((round.rows * round.cols - round.mineCount) * 0.30));
+  let best = null, smallest = Infinity;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const pool = available.slice();
+    const mines = Array(round.rows * round.cols).fill(false);
+    // Partial Fisher-Yates samples distinct allowed cells without retry loops.
+    for (let cursor = 0; cursor < round.mineCount; cursor += 1) {
+      const selected = cursor + Math.floor(random() * (pool.length - cursor));
+      [pool[cursor], pool[selected]] = [pool[selected], pool[cursor]];
+      mines[pool[cursor]] = true;
+    }
+    if (round.version === 1) return mines;
+    const probe = { ...round, mines, revealed: mines.map(() => false), flags: mines.map(() => false) };
+    revealSafeArea(probe, firstIndex);
+    const count = probe.revealed.filter(Boolean).length;
+    if (count <= openingLimit) return mines;
+    if (count < smallest) { smallest = count; best = mines; }
   }
-  return mines;
+  // Rare fallback is still a complete legal board with its full opening.
+  return best;
 }
 
 function finishIfWon(round) {
@@ -183,7 +199,7 @@ function booleanArray(value, length) {
 }
 
 function validateRound(value) {
-  if (!value || typeof value !== 'object' || Array.isArray(value) || value.version !== VERSION) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || ![1, VERSION].includes(value.version)) return null;
   const difficulty = difficultyById(value.difficulty);
   if (!difficulty || value.rows !== difficulty.rows || value.cols !== difficulty.cols
     || value.mineCount !== difficulty.mines

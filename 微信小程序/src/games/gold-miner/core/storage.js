@@ -1,4 +1,4 @@
-// Generated from vendor/gold-miner/original/storage.ts by vendor/gold-miner/generate.mjs.
+// Generated from vendor/gold-miner/storage.ts by vendor/gold-miner/generate.mjs.
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DEFAULT_SAVE = void 0;
@@ -53,6 +53,8 @@ function readRun(value, levelCount, maxMoney) {
     // The generator uses a 32-bit seed. A damaged optional seed does not discard progress.
     if (isInteger(value.seed, 0, 4294967295))
         run.seed = value.seed;
+    if (value.layoutVersion === 2)
+        run.layoutVersion = 2;
     if (value.match !== undefined) {
         const match = (0, modes_js_1.readMatch)(value.match, run.levelIndex, levelCount, maxMoney);
         if (!match)
@@ -78,6 +80,7 @@ function readShop(value, levelCount, maxMoney) {
         diamondBonus: run.diamondBonus,
         totalEarned: run.totalEarned,
         ...(run.seed !== undefined ? { seed: run.seed } : {}),
+        ...(run.layoutVersion === 2 ? { layoutVersion: 2 } : {}),
         purchaseCounts: {
             bomb: counts.bomb,
             strength: counts.strength,

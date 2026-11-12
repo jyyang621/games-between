@@ -3,5 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check:generated": "node vendor/gold-miner/generate.mjs --check && node vendor/zuma/check-core.cjs",
+    "check": "npm test && npm run check:generated"
+  },
   "description": "游戏之间微信小游戏合集：八款本地游戏，无第三方运行时依赖"
 }

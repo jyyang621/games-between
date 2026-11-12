@@ -17,7 +17,7 @@ const money = value => '¥' + String(Math.round(value)).replace(/\B(?=(\d{3})+(?
 const freshRun = () => ({ levelIndex: 0, wallet: 0, bombs: 0, strength: false, diamondBonus: false, totalEarned: 0 });
 
 /** Canvas-only adapter for the original Golden Valley game. delta is milliseconds. */
-function createGoldMinerGame({ read = () => null, write = () => false, now = Date.now } = {}) {
+function createGoldMinerGame({ read = () => null, write = () => false, now = Date.now, random = Math.random } = {}) {
   let preferences;
   try { preferences = read(SETTINGS_KEY); if (typeof preferences === 'string') preferences = JSON.parse(preferences); } catch { preferences = null; }
   let mode = preferences && ['solo', 'coop', 'versus'].includes(preferences.mode) ? preferences.mode : 'solo';
@@ -48,7 +48,17 @@ function createGoldMinerGame({ read = () => null, write = () => false, now = Dat
 
   const isDuo = () => mode !== 'solo';
   const stageUnit = () => mode === 'versus' ? '轮' : endless ? '层' : '关';
-  const levelFor = run => getLevel(run.levelIndex, endless, run.seed === undefined ? 1 : run.seed);
+  // Shop rendering asks about diamonds each frame. Generate only when the
+  // level/seed/version changes; old saves retain their original generator.
+  let cachedLevelKey = '', cachedLevel = null;
+  const levelFor = run => {
+    const key = `${endless}:${run.levelIndex}:${run.seed}:${run.layoutVersion}`;
+    if (key !== cachedLevelKey) {
+      cachedLevel = getLevel(run.levelIndex, endless, run.seed === undefined ? 1 : run.seed, run.layoutVersion === 2 ? 2 : 1);
+      cachedLevelKey = key;
+    }
+    return cachedLevel;
+  };
   const finalLevel = () => checkpoint.levelIndex === (endless ? MAX_ENDLESS_LEVEL : CAMPAIGN_LEVEL_COUNT) - 1;
   const modeLabel = () => `${endless ? '无尽矿场' : '40 关闯关'} · ${MODE_LABELS[mode]}`;
   const stageLabel = () => `第 ${checkpoint.levelIndex + 1}${endless ? '' : ' / ' + CAMPAIGN_LEVEL_COUNT} ${stageUnit()}`;
@@ -93,8 +103,8 @@ function createGoldMinerGame({ read = () => null, write = () => false, now = Dat
       return;
     }
     data = clearRun(data, mode, endless);
-    const run = { ...freshRun(), levelIndex: index };
-    if (endless) run.seed = (Math.floor(now()) ^ Math.floor(Math.random() * 0x100000000)) >>> 0;
+    const run = { ...freshRun(), levelIndex: index, layoutVersion: 2 };
+    run.seed = (Math.floor(now()) ^ Math.floor(random() * 0x100000000)) >>> 0;
     if (mode === 'versus') run.match = emptyMatch();
     prepare(run);
   }
@@ -137,6 +147,7 @@ function createGoldMinerGame({ read = () => null, write = () => false, now = Dat
         levelIndex: checkpoint.levelIndex + 1, wallet: total, bombs: 0,
         strength: false, diamondBonus: false, totalEarned: total, match: clone(completedMatch),
         ...(checkpoint.seed === undefined ? {} : { seed: checkpoint.seed }),
+        ...(checkpoint.layoutVersion === 2 ? { layoutVersion: 2 } : {}),
       };
     } else if (engine.won) {
       const total = checkpoint.totalEarned + engine.income;
@@ -150,6 +161,7 @@ function createGoldMinerGame({ read = () => null, write = () => false, now = Dat
           bombs: engine.bombs, strength: false, diamondBonus: false, totalEarned: total,
           purchaseCounts: { bomb: 0, strength: 0, diamond: 0 },
           ...(checkpoint.seed === undefined ? {} : { seed: checkpoint.seed }),
+          ...(checkpoint.layoutVersion === 2 ? { layoutVersion: 2 } : {}),
         };
       }
     } else if (endless) {

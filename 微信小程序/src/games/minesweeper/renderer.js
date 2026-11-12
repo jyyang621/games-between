@@ -211,8 +211,10 @@ function drawBoard(ctx, layout, state, targets) {
         cell.w * 0.62, NUMBERS[count], 'center', '600', cell.w * 0.9);
       label = count ? `周围有${count}颗雷` : '空白';
     }
+    // The host activates hit targets on touch-start. Defer the actual move
+    // to controller touch-end so a hold can flag without also revealing.
     // Labels for covered cells deliberately never inspect a hidden mine.
-    if (!state.paused && !terminal) targets.push({ ...cell, action: 'minesweeper:cell', payload: index,
+    if (!state.paused && !terminal) targets.push({ ...cell, action: 'minesweeper:press', payload: index,
       label: `第${Math.floor(index / layout.cols) + 1}行第${index % layout.cols + 1}列，${label}` });
   });
 }
@@ -245,7 +247,7 @@ function renderGame(ctx, layout, state) {
   drawBoard(ctx, layout, state, targets);
   if (layout.hint) {
     const r = layout.hint;
-    const hint = state.storageAvailable === false ? '暂无法存档，请保持本页打开' : !state.round.started ? '首步安全 · 先翻开一格试试' : state.mode === 'flag' ? '插旗模式 · 再点旗子可取消' : '翻开模式 · 点数字可快速排查';
+    const hint = state.storageAvailable === false ? '暂无法存档，请保持本页打开' : !state.round.started ? '首步安全 · 轻点翻开 / 长按插旗' : state.mode === 'flag' ? '轻点插旗 · 旗数凑齐后点数字连开' : '长按插旗 · 旗数凑齐后点数字连开';
     text(ctx, hint, r.x + r.w / 2, r.y + r.h / 2, layout.compact ? 10 : 11, COLORS.muted, 'center', '400', r.w - 4);
   }
   return state.paused || state.round.status === 'won' || state.round.status === 'lost' ? overlay(ctx, layout, state, targets) : targets;

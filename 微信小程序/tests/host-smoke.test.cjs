@@ -33,7 +33,7 @@ function fixture(width, height) {
 }
 
 for (const [width, height] of [[390, 844], [844, 390]]) {
-  test(`all eight games retain host/render/navigation contracts at ${width}x${height}`, t => {
+  test(`all registered games retain host/render/navigation contracts at ${width}x${height}`, t => {
     const { host, handlers, advance } = fixture(width, height);
     t.after(() => host.dispose());
     for (const entry of registry.list()) {

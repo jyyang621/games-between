@@ -31,6 +31,10 @@ function createRegistry(definitions) {
 
 const registry = createRegistry([
   {
+    id: 'billiards', title: '台球', subtitle: '中式8球 · 斯诺克 · 同机双人', icon: 'marbles', theme: 'dark', status: 'ready',
+    create: context => require('./games/billiards/index.js').createGame(context),
+  },
+  {
     id: 'sudoku', title: '数独', subtitle: '每一格，都有可能。', icon: 'grid', status: 'ready',
     create: context => require('./games/sudoku/index.js').createSudokuGame(context),
     matchLegacyQuery: query => typeof query.p === 'string' && Boolean(require('./games/sudoku/index.js').sharedRound(query)),
